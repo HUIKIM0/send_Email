@@ -13,8 +13,13 @@ namespace send_Email
 {
     public partial class ucAddress : UserControl
     {
+        /// <summary>
+        /// lboxAAdress.Items에 담긴 메일주소(받는이,참조,숨김)를 List<string>에 담기
+        /// 담아놓은 값들을 이용하여 message 보낼거임
+        /// </summary>
         public List<string> ListAdress
         {
+
             get => lboxAddress.Items.Cast<string>().ToList();
         }
 
@@ -44,13 +49,12 @@ namespace send_Email
                 }
 
                 lboxAddress.Items.Add(tboxAddress.Text);
-                lboxAddress.Text = "";
+                tboxAddress.Text = "";
             }
             else
             {
                 MessageBox.Show("입력 값이 메일주소 형식이 아닙니다.");
             }
-            lboxAddress.Items.Add(tboxAddress.Text);
         }
 
 

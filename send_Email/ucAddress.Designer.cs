@@ -30,9 +30,9 @@ namespace send_Email
         private void InitializeComponent()
         {
             this.gboxMain = new System.Windows.Forms.GroupBox();
-            this.tboxAddress = new System.Windows.Forms.TextBox();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.lboxAddress = new System.Windows.Forms.ListBox();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.tboxAddress = new System.Windows.Forms.TextBox();
             this.gboxMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,27 +43,10 @@ namespace send_Email
             this.gboxMain.Controls.Add(this.tboxAddress);
             this.gboxMain.Location = new System.Drawing.Point(3, 3);
             this.gboxMain.Name = "gboxMain";
-            this.gboxMain.Size = new System.Drawing.Size(331, 176);
+            this.gboxMain.Size = new System.Drawing.Size(288, 147);
             this.gboxMain.TabIndex = 0;
             this.gboxMain.TabStop = false;
             this.gboxMain.Text = "groupBox1";
-            // 
-            // tboxAddress
-            // 
-            this.tboxAddress.Location = new System.Drawing.Point(7, 25);
-            this.tboxAddress.Name = "tboxAddress";
-            this.tboxAddress.Size = new System.Drawing.Size(254, 25);
-            this.tboxAddress.TabIndex = 0;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Location = new System.Drawing.Point(267, 24);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(58, 26);
-            this.btnAdd.TabIndex = 1;
-            this.btnAdd.Text = "add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // lboxAddress
             // 
@@ -71,9 +54,26 @@ namespace send_Email
             this.lboxAddress.ItemHeight = 15;
             this.lboxAddress.Location = new System.Drawing.Point(7, 56);
             this.lboxAddress.Name = "lboxAddress";
-            this.lboxAddress.Size = new System.Drawing.Size(318, 109);
+            this.lboxAddress.Size = new System.Drawing.Size(273, 79);
             this.lboxAddress.TabIndex = 2;
             this.lboxAddress.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lboxAddress_MouseDoubleClick);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(222, 25);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(58, 26);
+            this.btnAdd.TabIndex = 1;
+            this.btnAdd.Text = "add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // tboxAddress
+            // 
+            this.tboxAddress.Location = new System.Drawing.Point(7, 25);
+            this.tboxAddress.Name = "tboxAddress";
+            this.tboxAddress.Size = new System.Drawing.Size(209, 25);
+            this.tboxAddress.TabIndex = 0;
             // 
             // ucAddress
             // 
@@ -81,7 +81,7 @@ namespace send_Email
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gboxMain);
             this.Name = "ucAddress";
-            this.Size = new System.Drawing.Size(338, 182);
+            this.Size = new System.Drawing.Size(298, 153);
             this.gboxMain.ResumeLayout(false);
             this.gboxMain.PerformLayout();
             this.ResumeLayout(false);
