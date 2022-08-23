@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cDBConnect.cs" />
     <Compile Include="cMail.cs" />
     <Compile Include="cSecretInfo.cs" />
     <Compile Include="Form1.cs">

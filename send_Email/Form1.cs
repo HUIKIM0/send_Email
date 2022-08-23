@@ -39,5 +39,7 @@ namespace send_Email
             string result = mail.SendEMail(tboxSubject.Text,tboxBody.Text,ListSend,ListRef,ListHide);
             MessageBox.Show(result);
         }
+
+
     }
 }
