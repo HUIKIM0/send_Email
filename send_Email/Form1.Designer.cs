@@ -39,10 +39,16 @@ namespace send_Email
             this.ucSend = new send_Email.ucAddress();
             this.btnSendMail = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lboxQueueData = new System.Windows.Forms.ListBox();
+            this.lblQueueCount = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnDBSelect = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dgEMailInfo = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgEMailInfo)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -118,13 +124,14 @@ namespace send_Email
             this.btnSendMail.Name = "btnSendMail";
             this.btnSendMail.Size = new System.Drawing.Size(289, 33);
             this.btnSendMail.TabIndex = 4;
-            this.btnSendMail.Text = "Mail Send";
+            this.btnSendMail.Text = "Mail Send (DB 저장)";
             this.btnSendMail.UseVisualStyleBackColor = true;
             this.btnSendMail.Click += new System.EventHandler(this.btnSendMail_Click);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.lboxQueueData);
+            this.groupBox2.Controls.Add(this.lblQueueCount);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(833, 25);
             this.groupBox2.Name = "groupBox2";
@@ -133,14 +140,23 @@ namespace send_Email
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Queue Status";
             // 
-            // label4
+            // lboxQueueData
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(119, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(15, 15);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "0";
+            this.lboxQueueData.FormattingEnabled = true;
+            this.lboxQueueData.ItemHeight = 15;
+            this.lboxQueueData.Location = new System.Drawing.Point(6, 50);
+            this.lboxQueueData.Name = "lboxQueueData";
+            this.lboxQueueData.Size = new System.Drawing.Size(292, 199);
+            this.lboxQueueData.TabIndex = 2;
+            // 
+            // lblQueueCount
+            // 
+            this.lblQueueCount.AutoSize = true;
+            this.lblQueueCount.Location = new System.Drawing.Point(119, 25);
+            this.lblQueueCount.Name = "lblQueueCount";
+            this.lblQueueCount.Size = new System.Drawing.Size(15, 15);
+            this.lblQueueCount.TabIndex = 1;
+            this.lblQueueCount.Text = "0";
             // 
             // label3
             // 
@@ -151,11 +167,43 @@ namespace send_Email
             this.label3.TabIndex = 0;
             this.label3.Text = "Queue Count: ";
             // 
+            // btnDBSelect
+            // 
+            this.btnDBSelect.Location = new System.Drawing.Point(848, 501);
+            this.btnDBSelect.Name = "btnDBSelect";
+            this.btnDBSelect.Size = new System.Drawing.Size(289, 33);
+            this.btnDBSelect.TabIndex = 6;
+            this.btnDBSelect.Text = "DB 조회";
+            this.btnDBSelect.UseVisualStyleBackColor = true;
+            this.btnDBSelect.Click += new System.EventHandler(this.btnDBSelect_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.dgEMailInfo);
+            this.groupBox3.Location = new System.Drawing.Point(12, 542);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(1125, 297);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "E-Mail Info Data";
+            // 
+            // dgEMailInfo
+            // 
+            this.dgEMailInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgEMailInfo.Location = new System.Drawing.Point(7, 25);
+            this.dgEMailInfo.Name = "dgEMailInfo";
+            this.dgEMailInfo.RowHeadersWidth = 51;
+            this.dgEMailInfo.RowTemplate.Height = 27;
+            this.dgEMailInfo.Size = new System.Drawing.Size(1112, 266);
+            this.dgEMailInfo.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1149, 546);
+            this.ClientSize = new System.Drawing.Size(1149, 851);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.btnDBSelect);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnSendMail);
             this.Controls.Add(this.ucSend);
@@ -169,6 +217,8 @@ namespace send_Email
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgEMailInfo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -185,8 +235,12 @@ namespace send_Email
         private ucAddress ucSend;
         private System.Windows.Forms.Button btnSendMail;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblQueueCount;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox lboxQueueData;
+        private System.Windows.Forms.Button btnDBSelect;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridView dgEMailInfo;
     }
 }
 

@@ -17,9 +17,10 @@ namespace send_Email
         private string _sendNic = null;  // EMail Nicname
 
 
-        public cMail(string sendMail)  
+        public cMail(string sendMail,string sendNic)  
         {
             _sendAddress = sendMail;  // aaa000@naver.com
+            _sendNic = sendNic;
         }
 
 
@@ -44,7 +45,7 @@ namespace send_Email
 
 
                 /* 메세지 전송*/
-                message = new MailMessage();   //from address를 따로 넣기? 어떻게?
+                message = new MailMessage(); //from address를 따로 넣기? 어떻게?
                 message.From = new MailAddress(_sendAddress,_sendNic, System.Text.Encoding.UTF8);
 
                 if (LtoSend.Count > 0)

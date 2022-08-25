@@ -13,7 +13,7 @@ namespace send_Email
         System.Data.OleDb.OleDbConnection _conn;
 
 
-        // 연결 시 DB주소(경로) 따기
+        // 생성자. 연결 시 DB주소(경로) 따기
         public cDBConnect(string strDBPath)
         {
             // DataAdapter는 자동으로 Connection을
