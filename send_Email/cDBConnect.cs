@@ -13,7 +13,7 @@ namespace send_Email
         System.Data.OleDb.OleDbConnection _conn;
 
 
-        // 생성자. 연결 시 DB주소(경로) 따기
+        // 생성자. 연결 시 DB주소(경로) 따기. DB연결
         public cDBConnect(string strDBPath)
         {
             // DataAdapter는 자동으로 Connection을
@@ -22,23 +22,17 @@ namespace send_Email
 
             _conn = new OleDbConnection(connStr);
 
-            /*
-            string Query = $@"SELECT * 
-                              FROM Voca";
- 
-            QueryExeCute(Query);
-            */
         }
 
         // 쿼리 호출
+        // 호출한 곳에서 받은 Query로 작업한 내용 반환
         public DataSet QueryExeCute(string Query)
         {
-            // Fill 전달 전에 DataSet객체 생성
+            // DataSet 객체 생성
             DataSet ds = new DataSet();
 
-
             System.Data.OleDb.OleDbDataAdapter adp = new OleDbDataAdapter(Query, _conn);
-            adp.Fill(ds);
+            adp.Fill(ds);  
 
             return ds;
         }
