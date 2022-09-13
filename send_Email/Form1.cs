@@ -50,7 +50,7 @@ namespace send_Email
             fTimerStart();  // Form_Load시 Timer시작
         }
 
-        // Mail Send (DB 저장)
+        // Mail Send (DB 저장). btnSendMail_Click
         // Mail 받을 사람들, Mail 내용 등.. !DB에 저장! 
         private void btnSendMail_Click(object sender, EventArgs e)
         {
@@ -94,7 +94,7 @@ namespace send_Email
 
 
         #region DB 조회(Query)
-        // DB Data 조회. 
+        // DB Data 조회 Query
         private void fSelectEMailInfo()
         {
             string Query = $@"select *
@@ -106,17 +106,25 @@ namespace send_Email
             dgEMailInfo.DataSource = ds.Tables[0];  
         }
 
-        // DB Select 이후 전송 여부 Update
+        // DB Update Query(DB Select 이후 전송 여부 업데이트. Quque에 새로 넣은거)
         private void fUpdateDataRead(int iID)
         {
             DateTime dt = DateTime.Now;
 
-            string Query = $@"update TB_MAIL_INFO set 전송여부 =""Y"", 전송일시 =""{dt}"" WHERE ID = {iID}";
+            string Query = $@"update TB_MAIL_INFO set 전송여부 =""Y"", 전송일시 =""{dt}"" where ID = {iID}";
 
             DataSet ds = _db.QueryExeCute(Query);
         }
 
-        // Mailing 전송 이후 결과 업뎃 필요!!!!
+        // DB Update Query(Mailing 전송 이후 결과 업데이트)
+        private void fUpdateDataRead(int iID,string strSendResult,string strErrorMessage)
+        {
+            DateTime dt = DateTime.Now;
+
+            string Query = $@"update TB_MAIL_INFO set 전송결과=""{strSendResult}"",미전송사유 =""{strErrorMessage}"",전송일시=""{dt}"" where ID ={iID} ";
+
+            DataSet ds = _db.QueryExeCute(Query);
+        }
 
         #endregion
 
@@ -145,11 +153,11 @@ namespace send_Email
                               from TB_MAIL_INFO
                               where 전송여부 =""N""
                               order by 작성일시";
-            DataSet ds = _db.QueryExeCute(Query);
+            DataSet ds = _db.QueryExeCute(Query);   //전송 안 한 Mail정보 가져옴
 
             foreach (DataRow oRow in ds.Tables[0].Rows)
             {
-                _QMailData.Enqueue(oRow);
+                _QMailData.Enqueue(oRow);  
 
                 int iID = (int)oRow[enCol.ID.ToString()]; //Queue에 넘어가게 된게 뭔지 보여줄려고
                 lboxQueueData.Items.Add(iID);
@@ -157,7 +165,7 @@ namespace send_Email
                 fUpdateDataRead(iID);
             }
 
-            lblQueueCount.Text = _QMailData.Count.ToString();
+            lblQueueCount.Text = _QMailData.Count.ToString();  
 
             if(ds.Tables[0].Rows.Count > 0)
             {
@@ -169,7 +177,29 @@ namespace send_Email
         // Queue에 있는 Data 하나씩 빼서 Mail 전송 필요!!!
         private void _tmQueueMailing_Tick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            int iCount = _QMailData.Count;
+            lblQueueCount.Text = iCount.ToString();
+
+            if (iCount <= 0) return;  //Quque에 뭐가 없으니까
+
+            //1.Queue에서 Data 빼오기
+            DataRow oRow = _QMailData.Dequeue();
+            int iID = (int)oRow[enCol.ID.ToString()];
+            lboxQueueData.Items.Add(iID);  //Queue에 담겨있던 Data 빼온거 보여주기
+
+            //2. 빼온 Data. Mail 전송 가능하게 바꾸고 Mail전송
+            string strSubject = oRow[enCol.제목.ToString()].ToString();
+            string strBody = oRow[enCol.내용.ToString()].ToString();
+
+            // Split 했을 때 배열에 넣을 값이 없을 경우 Empty 값을 넣지 않기 위해 SplitOption 사용
+            List<string> ListSend = oRow[enCol.받는이.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();   
+            List<string> ListRef = oRow[enCol.참조.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+            List<string> ListHide = oRow[enCol.숨김.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+
+            string result = mail.SendEMail(tboxSubject.Text, tboxBody.Text, ListSend, ListRef, ListHide);
+
+
+
         }
         #endregion
     }
