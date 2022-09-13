@@ -93,41 +93,6 @@ namespace send_Email
         }
 
 
-        #region DB 조회(Query)
-        // DB Data 조회 Query
-        private void fSelectEMailInfo()
-        {
-            string Query = $@"select *
-                              from TB_MAIL_INFO
-                              order by ID desc";
-
-            DataSet ds = _db.QueryExeCute(Query);
-
-            dgEMailInfo.DataSource = ds.Tables[0];  
-        }
-
-        // DB Update Query(DB Select 이후 전송 여부 업데이트. Quque에 새로 넣은거)
-        private void fUpdateDataRead(int iID)
-        {
-            DateTime dt = DateTime.Now;
-
-            string Query = $@"update TB_MAIL_INFO set 전송여부 =""Y"", 전송일시 =""{dt}"" where ID = {iID}";
-
-            DataSet ds = _db.QueryExeCute(Query);
-        }
-
-        // DB Update Query(Mailing 전송 이후 결과 업데이트)
-        private void fUpdateDataRead(int iID,string strSendResult,string strErrorMessage)
-        {
-            DateTime dt = DateTime.Now;
-
-            string Query = $@"update TB_MAIL_INFO set 전송결과=""{strSendResult}"",미전송사유 =""{strErrorMessage}"",전송일시=""{dt}"" where ID ={iID} ";
-
-            DataSet ds = _db.QueryExeCute(Query);
-        }
-
-        #endregion
-
 
         #region DB에서 전송여부N -> Queue에 담기 -> Queue에 담긴것들 전송하고 전송여부Y로
         Timer _tmDBSelect = new Timer();  // 전송여부N인 최신Data가 DB에 있는지 Timer
@@ -162,14 +127,14 @@ namespace send_Email
                 int iID = (int)oRow[enCol.ID.ToString()]; //Queue에 넘어가게 된게 뭔지 보여줄려고
                 lboxQueueData.Items.Add(iID);
 
-                fUpdateDataRead(iID);
+                fDBUpdateDataRead(iID);
             }
 
             lblQueueCount.Text = _QMailData.Count.ToString();  
 
             if(ds.Tables[0].Rows.Count > 0)
             {
-                fSelectEMailInfo();
+                fDBSelectEMailInfo();
             }
         }
 
@@ -191,16 +156,52 @@ namespace send_Email
             string strSubject = oRow[enCol.제목.ToString()].ToString();
             string strBody = oRow[enCol.내용.ToString()].ToString();
 
-            // Split 했을 때 배열에 넣을 값이 없을 경우 Empty 값을 넣지 않기 위해 SplitOption 사용
+                        // Split 했을 때 배열에 넣을 값이 없을 경우 Empty 값을 넣지 않기 위해 SplitOption 사용
             List<string> ListSend = oRow[enCol.받는이.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();   
             List<string> ListRef = oRow[enCol.참조.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
             List<string> ListHide = oRow[enCol.숨김.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
-            string result = mail.SendEMail(tboxSubject.Text, tboxBody.Text, ListSend, ListRef, ListHide);
+            string Result = mail.SendEMail(tboxSubject.Text, tboxBody.Text, ListSend, ListRef, ListHide); // //함수 SendEMail 작업에 성공하면 null 반환받음
+            string SendResult = (string.IsNullOrEmpty(Result)) ? "Y" : "N" ;
 
-
+            fDBUpdateDataRead(iID, Result, SendResult);
 
         }
+        #endregion
+
+        #region DB 조회(Query)
+        // DB Data 조회 Query
+        private void fDBSelectEMailInfo()
+        {
+            string Query = $@"select *
+                              from TB_MAIL_INFO
+                              order by ID desc";
+
+            DataSet ds = _db.QueryExeCute(Query);
+
+            dgEMailInfo.DataSource = ds.Tables[0];
+        }
+
+        // DB Update Query(DB Select 이후 전송 여부 업데이트. Quque에 새로 넣은거)
+        private void fDBUpdateDataRead(int iID)
+        {
+            DateTime dt = DateTime.Now;
+
+            string Query = $@"update TB_MAIL_INFO set 전송여부 =""Y"", 전송일시 =""{dt}"" where ID = {iID}";
+
+            DataSet ds = _db.QueryExeCute(Query);
+        }
+
+        // DB Update Query(Mailing 전송 이후 결과 업데이트)
+        private void fDBUpdateDataRead(int iID, string strSendResult, string strErrorMessage)
+        {
+            DateTime dt = DateTime.Now;
+
+            string Query = $@"update TB_MAIL_INFO set 전송결과=""{strSendResult}"",미전송사유 =""{strErrorMessage}"",전송일시=""{dt}"" where ID ={iID} ";
+
+            DataSet ds = _db.QueryExeCute(Query);
+        }
+
         #endregion
     }
 }
