@@ -81,17 +81,10 @@ namespace send_Email
                             ({enCol.작성일시}, {enCol.받는이}, {enCol.참조}, {enCol.숨김}, {enCol.제목}, {enCol.내용}, {enCol.전송여부}) 
                             VALUES (""{dt}"", ""{strLSend}"", ""{strLRef}"", ""{strLHide}"", ""{tboxSubject.Text}"", ""{tboxBody.Text}"", ""N"")";
 
-            DataSet ds = _db.QueryExeCute(Query);
+            DataSet ds = _db.QueryExeCute(Query); //Insert Into 작업한 DataSet 반환받음
 
-            fDBSelectEMailInfo();
+            fDBSelectEMailInfo();  
         }
-
-        // DB 조회
-        private void btnDBSelect_Click(object sender, EventArgs e)
-        {
-
-        }
-
 
 
         #region DB에서 전송여부N -> Queue에 담기 -> Queue에 담긴것들 전송하고 전송여부Y로
@@ -118,16 +111,17 @@ namespace send_Email
                               from TB_MAIL_INFO
                               where 전송여부 =""N""
                               order by 작성일시";
-            DataSet ds = _db.QueryExeCute(Query);   //전송 안 한 Mail정보 가져옴
+            DataSet ds = _db.QueryExeCute(Query);   
 
+            // 전송여부 N인 DataSet DataTable. Row 하나씩 빼서 Queue에 넣기
             foreach (DataRow oRow in ds.Tables[0].Rows)
             {
                 _QMailData.Enqueue(oRow);  
 
-                int iID = (int)oRow[enCol.ID.ToString()]; //Queue에 넘어가게 된게 뭔지 보여줄려고
+                int iID = (int)oRow[enCol.ID.ToString()]; //Queue에 넘어가게 된 Row가 뭔지 보여줄려고
                 lboxQueueData.Items.Add(iID);
 
-                fDBUpdateDataRead(iID);
+                fDBUpdateDataRead(iID);  //DataSet. 전송여부 Y로 업데이트
             }
 
             lblQueueCount.Text = _QMailData.Count.ToString();  
@@ -162,8 +156,9 @@ namespace send_Email
             List<string> ListHide = oRow[enCol.숨김.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
             string Result = Email.SendEMail(tboxSubject.Text, tboxBody.Text, ListSend, ListRef, ListHide); // //함수 SendEMail 작업에 성공하면 null 반환받음
-            string SendResult = (string.IsNullOrEmpty(Result)) ? "Y" : "N" ;
+            string SendResult = (string.IsNullOrEmpty(Result)) ? "Y" : "N" ; 
 
+            //3. Mail 전송 후의 DataSet
             fDBUpdateDataRead(iID, Result, SendResult);
 
         }
@@ -182,7 +177,7 @@ namespace send_Email
             dgEMailInfo.DataSource = ds.Tables[0];
         }
 
-        // DB Update Query(DB Select 이후 전송 여부 업데이트. Quque에 새로 넣은거)
+        // DB Update Query(전송여부N인 DB Data를 Queue에 넣고 전송여부 Y로 업데이트)
         private void fDBUpdateDataRead(int iID)
         {
             DateTime dt = DateTime.Now;

@@ -175,7 +175,6 @@ namespace send_Email
             this.btnDBSelect.TabIndex = 6;
             this.btnDBSelect.Text = "DB 조회";
             this.btnDBSelect.UseVisualStyleBackColor = true;
-            this.btnDBSelect.Click += new System.EventHandler(this.btnDBSelect_Click);
             // 
             // groupBox3
             // 
