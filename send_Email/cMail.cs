@@ -79,7 +79,7 @@ namespace send_Email
 
           
                 smtp.Send(message);
-                return "Mail 전송 성공";
+                return null;   //전송 성공이면 null 
 
             }
             catch (Exception ex)

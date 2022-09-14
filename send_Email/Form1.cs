@@ -29,7 +29,7 @@ namespace send_Email
 
         string _strDBProgramPath = Application.StartupPath + @"\EMailSendInfo.mdb";  
 
-        cMail mail;
+        cMail Email;
         cDBConnect _db;
 
 
@@ -46,7 +46,7 @@ namespace send_Email
             ucRef.strTitle = "참조";
             ucHide.strTitle = "숨김";
 
-            mail = new cMail("aa@naver.com","히히");   //EMail주소 입력
+            Email = new cMail("aa@naver.com","히히");   //EMail주소 입력
             fTimerStart();  // Form_Load시 Timer시작
         }
 
@@ -66,9 +66,9 @@ namespace send_Email
             DateTime dt = DateTime.Now;
 
             // DB 주소등록 type이 string이라서 문자열로 연결
-            string strLSend = string.Join(",", ucSend.ListAdress);
-            string strLRef = string.Join(",", ucRef.ListAdress);
-            string strLHide = string.Join(",", ucHide.ListAdress);
+            string strLSend = string.Join(",", ucSend.ListAddress);
+            string strLRef = string.Join(",", ucRef.ListAddress);
+            string strLHide = string.Join(",", ucHide.ListAddress);
 
             if(string.IsNullOrEmpty(strLSend) || string.IsNullOrEmpty(tboxSubject.Text) || string.IsNullOrEmpty(tboxBody.Text))
             {
@@ -83,7 +83,7 @@ namespace send_Email
 
             DataSet ds = _db.QueryExeCute(Query);
 
-            fSelectEMailInfo();
+            fDBSelectEMailInfo();
         }
 
         // DB 조회
@@ -161,7 +161,7 @@ namespace send_Email
             List<string> ListRef = oRow[enCol.참조.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
             List<string> ListHide = oRow[enCol.숨김.ToString()].ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
-            string Result = mail.SendEMail(tboxSubject.Text, tboxBody.Text, ListSend, ListRef, ListHide); // //함수 SendEMail 작업에 성공하면 null 반환받음
+            string Result = Email.SendEMail(tboxSubject.Text, tboxBody.Text, ListSend, ListRef, ListHide); // //함수 SendEMail 작업에 성공하면 null 반환받음
             string SendResult = (string.IsNullOrEmpty(Result)) ? "Y" : "N" ;
 
             fDBUpdateDataRead(iID, Result, SendResult);
@@ -201,7 +201,6 @@ namespace send_Email
 
             DataSet ds = _db.QueryExeCute(Query);
         }
-
         #endregion
     }
 }

@@ -17,7 +17,7 @@ namespace send_Email
         /// lboxAAdress.Items에 담긴 메일주소(받는이,참조,숨김)를 List<string>에 담기
         /// 담아놓은 값들을 이용하여 message 보낼거임
         /// </summary>
-        public List<string> ListAdress
+        public List<string> ListAddress
         {
 
             get => lboxAddress.Items.Cast<string>().ToList();
@@ -42,7 +42,7 @@ namespace send_Email
         {
             if (EmailFormatCheck())
             {
-                if(ListAdress != null && ListAdress.Contains(tboxAddress.Text))  
+                if(ListAddress != null && ListAddress.Contains(tboxAddress.Text))  
                 {
                     MessageBox.Show("이미 등록되어 있는 메일주소 입니다.");
                     return;  //기존에 있으면 빠꾸
@@ -86,5 +86,6 @@ namespace send_Email
                 return false;
             }
         }
+
     }
 }
