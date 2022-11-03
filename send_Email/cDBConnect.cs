@@ -24,7 +24,7 @@ namespace send_Email
 
         }
 
-        // OleDbDataAdapter -> 데이터검색/저장. Fill을 사용하여 데이터 Update
+        // OleDbDataAdapter -> 데이터검색하고 저장. Fill을 사용하여 데이터 Update
         // 호출한 곳에서 받은 Query에 맞게 작업하고(Query, _conn) return DataSet
         public DataSet QueryExeCute(string Query)
         {
